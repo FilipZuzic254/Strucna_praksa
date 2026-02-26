@@ -23,6 +23,7 @@ class InventoryItemFactory extends Factory
     public function definition(): array
     {
         return [
+            'product_id' => Product::factory(),
             'serial_number' => fake()->unique()->bothify('SN-*********'),
             'notes' => fake()->optional()->sentence(),
         ];

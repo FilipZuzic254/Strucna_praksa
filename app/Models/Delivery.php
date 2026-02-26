@@ -16,4 +16,9 @@ class Delivery extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function items()
+    {
+        return $this->hasMany(DeliveryItem::class);
+    }
 }

@@ -11,4 +11,21 @@ class Product extends Model
 
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
+
+    public function inventoryItems()
+    {
+        return $this->hasMany(InventoryItem::class);
+    }
+
+    public function inStockItems()
+    {
+        return $this->hasMany(InventoryItem::class)
+            ->where('status', 'in_stock');
+    }
+    
+    public function deliveredItems()
+    {
+        return $this->hasMany(InventoryItem::class)
+            ->whereNot('status', 'in_stock');
+    }
 }

@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Filament\Resources\Products\Tables;
+namespace App\Filament\Widgets;
 
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Table;
+use Filament\Widgets\TableWidget;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\Product;
 use Filament\Tables\Columns\TextColumn;
 
-class ProductsTable
+class ProductCount extends TableWidget
 {
-    public static function configure(Table $table): Table
+    protected static ?string $heading = 'Product Item Counts';
+    public function table(Table $table): Table
     {
         return $table
+            ->query(fn (): Builder => Product::query())
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
@@ -21,26 +23,27 @@ class ProductsTable
                 TextColumn::make('sku')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('manufacturer')
-                    ->sortable(),
-                TextColumn::make('warranty_months')
-                    ->sortable(),
                 TextColumn::make('in_stock_items_count')
                     ->counts('inStockItems')
                     ->label('In Stock')
                     ->sortable(),
+                TextColumn::make('delivered_items_count')
+                    ->counts('deliveredItems')
+                    ->label('Delivered')
+                    ->sortable(),
             ])
-            ->defaultSort('name')
             ->filters([
                 //
             ])
+            ->headerActions([
+                //
+            ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                //
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    //
                 ]),
             ]);
     }

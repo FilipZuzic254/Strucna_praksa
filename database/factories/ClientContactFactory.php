@@ -18,7 +18,7 @@ class ClientContactFactory extends Factory
     public function definition(): array
     {
         return [
-            'client_id' => Client::inRandomOrder()->first()->id,
+            'client_id' => Client::factory(),
             'first_name' => fake('hr_HR')->firstName(),
             'last_name' => fake('hr_HR')->lastName(),
             'email' => fake('hr_HR')->unique()->companyEmail(),

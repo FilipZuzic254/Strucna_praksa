@@ -13,7 +13,7 @@ class ProductForm
         return $schema
             ->components([
                 TextInput::make('name')->required(),
-                TextInput::make('sku')->required(),
+                TextInput::make('sku')->required()->unique(),
                 TextInput::make('manufacturer')->required(),
                 Select::make('warranty_months')
                     ->options([

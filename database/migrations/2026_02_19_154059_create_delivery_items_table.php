@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('delivery_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('delivery_id')->constrained(table: 'deliveries', indexName: 'delivery_items_delivery_id_foreign');
-            $table->foreignId('inventory_item_id')->constrained(table: 'inventory_items', indexName: 'delivery_items_inventory_item_id_foreign');
+            $table->foreignId('inventory_item_id')->constrained(table: 'inventory_items', indexName: 'delivery_items_inventory_item_id_foreign')->unique();
             $table->timestamps();
         });
     }

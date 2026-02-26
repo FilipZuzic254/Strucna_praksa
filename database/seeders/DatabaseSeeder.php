@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             ClientSeeder::class,
-            ClientContactSeeder::class,
             DeliverySeeder::class,
             ProductSeeder::class,
         ]);
