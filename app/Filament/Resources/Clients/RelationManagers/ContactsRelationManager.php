@@ -68,16 +68,13 @@ class ContactsRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make(),
-                AssociateAction::make(),
             ])
             ->recordActions([
                 EditAction::make(),
-                DissociateAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DissociateBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
             ]);

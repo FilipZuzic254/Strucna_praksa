@@ -12,6 +12,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Table;
+use App\Models\InventoryItem;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -26,15 +27,27 @@ class ItemsRelationManager extends RelationManager
                     ->relationship(
                         name: 'inventoryItem',
                         titleAttribute: 'serial_number',
-                        ignoreRecord: true,
-                        modifyQueryUsing: function (Builder $query) {
-                            $query->where('status', 'in_stock');
-                        }
                     )
+                    ->searchable()
+                    ->getSearchResultsUsing(function (string $search) {
+                        return InventoryItem::query()
+                            ->where('status', 'in_stock')
+                            ->where(function ($query) use ($search) {
+                                $query->where('serial_number', 'ilike', "%{$search}%")
+                                    ->orWhereHas('product', function ($q) use ($search) {
+                                        $q->where('name', 'ilike', "%{$search}%");
+                                    });
+                            })
+                            ->limit(50)
+                            ->get()
+                            ->mapWithKeys(fn ($item) => [
+                                $item->id => $item->product->name . ' - ' . $item->serial_number,
+                            ])
+                            ->toArray();
+                    })
                     ->getOptionLabelFromRecordUsing(fn ($record) =>
                         $record->product->name . ' - ' . $record->serial_number
                     )
-                    ->searchable('serial_number', 'product.name')
                     ->required(),
             ]);
     }
