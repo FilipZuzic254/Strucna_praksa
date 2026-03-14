@@ -28,4 +28,9 @@ class Product extends Model
         return $this->hasMany(InventoryItem::class)
             ->whereNot('status', 'in_stock');
     }
+
+    public function documents()
+    {
+        return $this->hasMany(ProductDocument::class);
+    }
 }

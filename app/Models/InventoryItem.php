@@ -45,4 +45,9 @@ class InventoryItem extends Model
     {
         return $this->hasMany(DeliveryItem::class);
     } 
+
+    public function sensorReadings()
+    {
+        return $this->hasMany(SensorReading::class);
+    }
 }

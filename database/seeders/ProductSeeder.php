@@ -14,7 +14,7 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory()->count(20)->create()
+        Product::factory()->count(10)->create()
             ->each(function ($product) {
 
                 InventoryItem::factory()->count(rand(5, 10))->for($product)->inStock()->create();
