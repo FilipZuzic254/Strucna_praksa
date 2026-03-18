@@ -31,6 +31,6 @@ class Product extends Model
 
     public function documents()
     {
-        return $this->hasMany(ProductDocument::class);
+        return $this->belongsToMany(Document::class, 'product_documents');
     }
 }

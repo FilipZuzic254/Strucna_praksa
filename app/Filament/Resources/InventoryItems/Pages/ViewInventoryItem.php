@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\InventoryItems\Pages;
 
 use App\Filament\Resources\InventoryItems\InventoryItemResource;
+use App\Livewire\AvailableItemDocuments;
 use App\Livewire\ItemPressureChart;
 use App\Livewire\ItemTemperatureChart;
 use Filament\Actions\EditAction;
@@ -29,6 +30,7 @@ class ViewInventoryItem extends ViewRecord
     protected function getFooterWidgets(): array
     {
         return [
+            AvailableItemDocuments::class,
             ItemTemperatureChart::class,
             ItemPressureChart::class,
         ];

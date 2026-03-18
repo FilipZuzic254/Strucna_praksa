@@ -5,7 +5,6 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
-use App\Models\ProductDocument;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Document>
@@ -20,27 +19,22 @@ class DocumentFactory extends Factory
     public function definition(): array
     {
 
-        $filename = fake()->unique()->word() . '.pdf';
+        $filename = fake()->unique()->word() . '.txt';
 
-        Storage::disk('public')->put($filename, fake()->text(2000));
+        Storage::disk('public/documents')->put($filename, fake()->text(2000));
 
         return [
-            'filename' => $filename,
+            'file_name' => $filename,
+            'file_path' => 'documents/' . $filename,
         ];
     }
 
     public function connectedProducts($max = 3){
-        return $this->has(
-            ProductDocument::factory()
-            ->state(function () {
-                $product = Product::inRandomOrder()->first();
+        return $this->afterCreating(function ($document) use ($max) {
 
-                return [
-                    'product_id' => $product->id,
-                ];
-            })
-            ->count(rand(1, $max)),
-            'products'
-        );
+            $products = Product::inRandomOrder()->limit(rand(1, $max))->pluck('id');
+
+            $document->products()->attach($products);
+        });
     }
 }

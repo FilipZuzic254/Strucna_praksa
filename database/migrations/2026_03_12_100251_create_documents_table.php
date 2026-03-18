@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('filename')->unique()->index();
+            $table->string('file_name')->unique()->index();
+            $table->string('file_path')->unique()->index();
             $table->timestamps();
         });
     }

@@ -46,6 +46,15 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        
+        'public/documents' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/documents'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage/documents',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
 
         's3' => [
             'driver' => 's3',

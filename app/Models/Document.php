@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Document extends Model
 {
-    protected $fillable = ['filename'];
+    protected $fillable = ['file_name', 'file_path'];
 
     /** @use HasFactory<\Database\Factories\DocumentFactory> */
     use HasFactory;
 
     public function products()
     {
-        return $this->hasMany(ProductDocument::class);
+        return $this->belongsToMany(Product::class, 'product_documents');
     }
 
 }
