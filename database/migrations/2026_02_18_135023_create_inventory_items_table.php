@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('serial_number')->unique();
             $table->enum('status', ['in_stock', 'delivered', 'faulty', 'replaced'])->default('in_stock')->index();
             $table->date('purchased_at')->nullable();
+            $table->date('installed_at')->nullable();
             $table->date('warranty_expires_at')->nullable()->index();
             $table->text('notes')->nullable();
             $table->timestamps();

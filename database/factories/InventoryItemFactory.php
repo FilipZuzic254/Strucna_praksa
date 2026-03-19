@@ -8,6 +8,7 @@ use App\Models\ServiceLog;
 use App\Models\Delivery;
 use App\Models\DeliveryItem;
 use App\Models\InventoryItem;
+use Illuminate\Support\Carbon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\InventoryItem>
@@ -43,11 +44,19 @@ class InventoryItemFactory extends Factory
     public function delivered()
     {
         return $this->state(function () {
-            $date = fake()->dateTimeBetween('-1 year', 'now');
+            $purchace_date = Carbon::instance(
+                fake()->dateTimeBetween('-1 year', 'now')
+            );
+
+            $installation_date = fake()->dateTimeBetween(
+                $purchace_date, 
+                $purchace_date->copy()->addMonths(2)
+            );
 
             return [
                 'status' => 'delivered',
-                'purchased_at' => $date,
+                'purchased_at' => $purchace_date,
+                'installed_at' => $installation_date,
             ];
         })->has(
             DeliveryItem::factory()->state(function (array $attributes, InventoryItem $item) {
@@ -64,11 +73,19 @@ class InventoryItemFactory extends Factory
     public function faulty()
     {
         return $this->state(function () {
-            $date = fake()->dateTimeBetween('-1 year', 'now');
+            $purchace_date = Carbon::instance(
+                fake()->dateTimeBetween('-1 year', 'now')
+            );
+
+            $installation_date = fake()->dateTimeBetween(
+                $purchace_date, 
+                $purchace_date->copy()->addMonths(2)
+            );
 
             return [
                 'status' => 'faulty',
-                'purchased_at' => $date,
+                'purchased_at' => $purchace_date,
+                'installed_at' => $installation_date,
             ];
         })->has(
             ServiceLog::factory()->state(function (array $attributes, InventoryItem $item) {
@@ -97,11 +114,19 @@ class InventoryItemFactory extends Factory
     public function replaced()
     {
         return $this->state(function () {
-            $date = fake()->dateTimeBetween('-1 year', 'now');
+            $purchace_date = Carbon::instance(
+                fake()->dateTimeBetween('-1 year', 'now')
+            );
+
+            $installation_date = fake()->dateTimeBetween(
+                $purchace_date, 
+                $purchace_date->copy()->addMonths(2)
+            );
 
             return [
                 'status' => 'replaced',
-                'purchased_at' => $date,
+                'purchased_at' => $purchace_date,
+                'installed_at' => $installation_date,
             ];
         })->has(
             ServiceLog::factory()->state(function (array $attributes, InventoryItem $item) {

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class InventoryItem extends Model
 {
-    protected $fillable = ['product_id', 'serial_number', 'status', 'purchased_at', 'warranty_expires_at', 'notes'];
+    protected $fillable = ['product_id', 'serial_number', 'status', 'purchased_at', 'installed_at', 'warranty_expires_at', 'notes'];
 
     protected $casts = [
         'purchased_at' => 'date',
+        'installed_at' => 'date',
         'warranty_expires_at' => 'date',
     ];
         
@@ -20,12 +21,12 @@ class InventoryItem extends Model
     protected static function booted()
     {
         static::saving(function ($item) {
-            if ($item->purchased_at && !$item->warranty_expires_at) {
+            if ($item->installed_at && !$item->warranty_expires_at) {
                 $product = Product::find($item->product_id);
 
                 if ($product) {
                     $item->warranty_expires_at =
-                        $item->purchased_at->copy()->addMonths($product->warranty_months);
+                        $item->installed_at->copy()->addMonths($product->warranty_months);
                 }
             }
         });

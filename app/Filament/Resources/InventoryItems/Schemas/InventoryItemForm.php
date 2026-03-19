@@ -53,16 +53,19 @@ class InventoryItemForm
                             ]]);
                         }
                     }),
+                DatePicker::make('purchased_at')
+                    ->required(),
                 Grid::make()
                     ->schema([
-                        DatePicker::make('purchased_at')
-                            ->required(),
+                        DatePicker::make('installed_at')
+                            ->required()
+                            ->afterOrEqual('purchased_at'),
                         DatePicker::make('warranty_expires_at')
-                            ->afterOrEqual('purchased_at')
+                            ->afterOrEqual('installed_at')
                             ->hintAction(
                                 Action::make('info')
                                     ->icon('heroicon-m-information-circle')
-                                    ->tooltip('Value will be automatically calculated from product warranty length if left empty')
+                                    ->tooltip('Value will be automatically calculated from product warranty length, starting from installation date if left empty')
                                     ->disabled(),
                             ),
                     ])

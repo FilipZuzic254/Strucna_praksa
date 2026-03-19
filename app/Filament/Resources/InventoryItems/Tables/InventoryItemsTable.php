@@ -37,6 +37,9 @@ class InventoryItemsTable
                 TextColumn::make('purchased_at')
                     ->date()
                     ->sortable(),
+                TextColumn::make('installed_at')
+                    ->date()
+                    ->sortable(),
                 TextColumn::make('warranty_expires_at')
                     ->date()
                     ->sortable(),
