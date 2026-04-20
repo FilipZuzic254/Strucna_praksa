@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sensor_readings', function (Blueprint $table) {
+        Schema::create('pressure_readings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inventory_item_id')->constrained()->index();
-            $table->integer('temperature')->nullable();
+            $table->foreignId('inventory_item_id')->constrained();
             $table->integer('pressure')->nullable();
+            $table->boolean('is_faulty')->default(false);
             $table->timestamps();
-            $table->index(['created_at']);
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sensor_readings');
+        Schema::dropIfExists('pressure_readings');
     }
 };

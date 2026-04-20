@@ -8,6 +8,7 @@ use App\Livewire\ItemPressureChart;
 use App\Livewire\ItemTemperatureChart;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Actions\Action;
 
 class ViewInventoryItem extends ViewRecord
 {
@@ -17,6 +18,11 @@ class ViewInventoryItem extends ViewRecord
     {
         return [
             EditAction::make(),
+            Action::make('exportSensors')
+                ->label('Export Sensor Data')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('info')
+                ->url(fn () => route('item.sensor.export', $this->record))
         ];
     }
 

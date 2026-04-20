@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Filament\Widgets\ChartWidget;
-use App\Models\SensorReading;
+use App\Models\TemperatureReading;
 
 class ItemTemperatureChart extends ChartWidget
 {
@@ -15,7 +15,11 @@ class ItemTemperatureChart extends ChartWidget
 
     protected function getData(): array
     {
-        $data = SensorReading::where('inventory_item_id', $this->id)->get();
+        $data = TemperatureReading::where('inventory_item_id', $this->id)
+            ->select('temperature', 'created_at')
+            ->latest()
+            ->limit(20)  
+            ->get();
 
 
         return [

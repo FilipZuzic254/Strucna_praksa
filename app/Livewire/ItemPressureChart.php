@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Models\PressureReading;
 use Filament\Widgets\ChartWidget;
-use App\Models\SensorReading;
 
 class ItemPressureChart extends ChartWidget
 {
@@ -15,7 +15,11 @@ class ItemPressureChart extends ChartWidget
 
     protected function getData(): array
     {
-        $data = SensorReading::where('inventory_item_id', $this->id)->get();
+        $data = PressureReading::where('inventory_item_id', $this->id)
+            ->select('pressure', 'created_at')
+            ->latest()
+            ->limit(20)  
+            ->get();
 
 
         return [
