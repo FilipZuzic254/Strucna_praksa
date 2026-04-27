@@ -8,5 +8,6 @@ Route::get('/', function () {
 });
 
 Route::get('/inventory-items/{inventoryItem}/export-sensors', [SensorExportController::class, 'export'])
-    ->name('item.sensor.export')
+    ->name('item.sensors.export')
     ->middleware(['auth']);
+

@@ -18,11 +18,16 @@ class ViewInventoryItem extends ViewRecord
     {
         return [
             EditAction::make(),
-            Action::make('exportSensors')
-                ->label('Export Sensor Data')
+            Action::make('exportTemperature')
+                ->label('Export Temperature Data')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('info')
-                ->url(fn () => route('item.sensor.export', $this->record))
+                ->url(fn () => route('item.sensors.export', [$this->record, 'type' => 'temperature'])),
+            Action::make('exportPressure')
+                ->label('Export Pressure Data')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('info')
+                ->url(fn () => route('item.sensors.export', [$this->record, 'type' => 'pressure'])),
         ];
     }
 
