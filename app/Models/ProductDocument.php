@@ -12,7 +12,7 @@ class ProductDocument extends Model
     /** @use HasFactory<\Database\Factories\ProductDocumentFactory> */
     use HasFactory;
 
-    /*
+    
     public function product()
     {
         return $this->belongsTo(Product::class);
@@ -22,6 +22,6 @@ class ProductDocument extends Model
     {
         return $this->belongsTo(Document::class);
     }
-    */
+    
 
 }

@@ -23,8 +23,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            KpdCodeSeeder::class,
+            TaxExemptionSeeder::class,
             ClientSeeder::class,
             DeliverySeeder::class,
+            SensorSeeder::class,
             ProductSeeder::class,
             DocumentSeeder::class,
         ]);

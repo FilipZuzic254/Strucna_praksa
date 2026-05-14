@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Jobs\GenerateTemperature;
-use App\Jobs\GeneratePressure;
+use App\Jobs\GenerateSensorReading;
 use App\Models\InventoryItem;
+use App\Models\ProductSensor;
 
 class SimulateSensorReadings extends Command
 {
@@ -31,10 +31,14 @@ class SimulateSensorReadings extends Command
         $inventoryItems = InventoryItem::where('status', 'delivered')
             ->orWhere('status', 'replaced')
             ->get();
-
+        
         foreach ($inventoryItems as $item) {
-            GenerateTemperature::dispatch($item);
-            GeneratePressure::dispatch($item);
+            $itemSensors = ProductSensor::where('product_id', $item->product_id)
+                ->get();
+            
+            foreach ($itemSensors as $sensor) {
+                GenerateSensorReading::dispatch($item, $sensor);
+            }
         }
     }
 }

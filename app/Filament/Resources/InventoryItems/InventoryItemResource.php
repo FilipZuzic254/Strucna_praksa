@@ -20,7 +20,7 @@ class InventoryItemResource extends Resource
 {
     protected static ?string $model = InventoryItem::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquaresPlus;
 
     public static function form(Schema $schema): Schema
     {

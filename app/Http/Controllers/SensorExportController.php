@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\InventoryItem;
-use App\Models\TemperatureReading;
-use App\Models\PressureReading;
+use App\Models\ProductSensor;
+use App\Models\SensorReading;
 use Illuminate\Http\Request;
 
 class SensorExportController extends Controller
@@ -12,44 +12,40 @@ class SensorExportController extends Controller
     public function export(InventoryItem $inventoryItem, Request $request)
     {
 
-        $type = $request->query('type');
+        $productSensor = ProductSensor::with('sensor')
+            ->findOrFail($request->query('product_sensor_id'));
 
-        if ($type === "temperature") {
-            $data = TemperatureReading::where('inventory_item_id', $inventoryItem->id)
-            ->select('temperature', 'is_faulty', 'created_at')
-            ->latest()
-            ->get();
-        }
-        else if ($type === "pressure") {
-            $data = PressureReading::where('inventory_item_id', $inventoryItem->id)
-                ->select('pressure', 'is_faulty', 'created_at')
-                ->latest()
-                ->get();
-        }
         
-        $filename = $type . '_export_' . $inventoryItem->id . '_' . now()->format('Ymd_His') . '.csv';
+
+        $sensorName = $productSensor->sensor->name;
+        $filename = strtolower($sensorName) . '_export_' . $inventoryItem->id . '_' . now()->format('Ymd_His') . '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename={$filename}",
         ];
 
-        $callback = function() use ($data, $type) {
-            
+        $callback = function() use ($inventoryItem, $productSensor, $sensorName) {
             $handle = fopen('php://output', 'w');
+            fputcsv($handle, [$sensorName, 'Recorded At']);
 
-            fputcsv($handle, [$type === 'temperature' ? 'Temperature' : 'Pressure', 'Is Faulty', 'Recorded At']);
-            foreach ($data as $reading) {
-                fputcsv($handle, [
-                    $reading->temperature ?? $reading->pressure,
-                    $reading->is_faulty ? 'Yes' : 'No',
-                    $reading->created_at->format('Y-m-d H:i:s'),
-                ]);
-            }
-
+            SensorReading::where('inventory_item_id', $inventoryItem->id)
+                ->where('product_sensor_id', $productSensor->id)
+                ->select('value', 'created_at')
+                ->latest()
+                ->chunk(500, function($chunk) use ($handle) {
+                    foreach ($chunk as $reading) {
+                        fputcsv($handle, [
+                            $reading->value,
+                            $reading->created_at->format('Y-m-d H:i:s'),
+                        ]);
+                    }
+                });
+                
             fclose($handle);
         };
 
         return response()->stream($callback, 200, $headers);
+
     }
 }

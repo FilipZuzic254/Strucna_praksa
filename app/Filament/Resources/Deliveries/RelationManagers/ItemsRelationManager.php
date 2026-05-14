@@ -74,7 +74,10 @@ class ItemsRelationManager extends RelationManager
                     }),
             ])
             ->recordActions([
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->after(function ($record) {
+                        $record->inventoryItem->update(['status' => 'in_stock', 'purchased_at' => null]);
+                    }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

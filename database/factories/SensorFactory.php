@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TemperatureReading>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sensor>
  */
-class TemperatureReadingFactory extends Factory
+class SensorFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,8 @@ class TemperatureReadingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->word(),
+            'unit' => $this->faker->randomElement(['°C', 'bar', 'hPa', 'L/min', 'ppm', 'mg/L']),
         ];
     }
 }

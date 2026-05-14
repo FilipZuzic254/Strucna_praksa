@@ -7,7 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'sku', 'manufacturer', 'warranty_months'];
+    protected $fillable = [
+        'name',
+        'sku',
+        'kpd_code_id',
+        'unit_price',
+        'unit_of_measure',
+        'discount',
+        'tax_rate',
+        'tax_exemption_id',
+        'description',
+        'warranty_months',
+    ];
 
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
@@ -32,5 +43,20 @@ class Product extends Model
     public function documents()
     {
         return $this->belongsToMany(Document::class, 'product_documents');
+    }
+
+    public function kpdCode()
+    {
+        return $this->belongsTo(KpdCode::class);
+    }
+
+    public function taxExemption()
+    {
+        return $this->belongsTo(TaxExemption::class);
+    }
+
+    public function productSensors()
+    {
+        return $this->hasMany(ProductSensor::class);
     }
 }

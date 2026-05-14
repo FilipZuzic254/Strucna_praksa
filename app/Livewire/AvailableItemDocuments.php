@@ -13,7 +13,7 @@ class AvailableItemDocuments extends Widget
 
     protected int | string | array $columnSpan = 'full';
 
-    public $id = null;
+    public $id;
 
     public $documents = [];
 
@@ -27,20 +27,4 @@ class AvailableItemDocuments extends Widget
             ->get();
     }
 
-    /*
-    public function mount()
-    {
-        $productId = InventoryItem::where('id', $this->id)->value('product_id');
-
-        $documentsForProduct = ProductDocument::where('product_id', $productId)->select('document_id')->get();
-
-        $this->documents = $documentsForProduct->map(function ($singleDocument) {
-            $doc = Document::where('id', $singleDocument->document_id)->get();
-            return [
-                'name' => $doc->filename,
-                'url' => asset('storage/documents/' . $doc->filename),
-            ];
-        })->toArray();
-    }
-    */
 }

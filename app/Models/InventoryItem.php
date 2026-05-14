@@ -56,4 +56,9 @@ class InventoryItem extends Model
     {
         return $this->hasMany(PressureReading::class);
     }
+
+    public function sensorReadings()
+    {
+        return $this->hasMany(SensorReading::class);
+    }
 }

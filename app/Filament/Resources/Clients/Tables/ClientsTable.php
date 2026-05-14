@@ -24,8 +24,8 @@ class ClientsTable
                 TextColumn::make('type')
                     ->badge()
                     ->color(fn ($state) => match ($state) {
-                        'person' => 'primary',
-                        'company' => 'info',
+                        'person' => 'info',
+                        'company' => 'warning',
                     })
                     ->searchable(),
                 TextColumn::make('oib')
