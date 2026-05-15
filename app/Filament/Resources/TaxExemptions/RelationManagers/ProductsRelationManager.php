@@ -3,8 +3,9 @@
 namespace App\Filament\Resources\TaxExemptions\RelationManagers;
 
 use App\Filament\Resources\Products\ProductResource;
-use Filament\Actions\CreateAction;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Actions\ViewAction;
+use Filament\Actions\Action;
 use Filament\Tables\Table;
 
 class ProductsRelationManager extends RelationManager
@@ -17,7 +18,20 @@ class ProductsRelationManager extends RelationManager
     {
         return $table
             ->headerActions([
-                CreateAction::make(),
+                Action::make('info')
+                    ->icon('heroicon-o-information-circle')
+                    ->iconButton()
+                    ->tooltip('To edit product Tax Exemption code, please edit the product itself.')
+                    ->color('warning'),
+            ])
+            ->recordActions([
+                ViewAction::make()
+                    ->url(fn ($record) => 
+                        ProductResource::getUrl(
+                            'edit',
+                            ['record' => $record->id]
+                        )
+                    )
             ]);
     }
 }

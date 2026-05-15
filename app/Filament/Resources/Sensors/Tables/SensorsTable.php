@@ -18,14 +18,11 @@ class SensorsTable
                     ->searchable(),
                 TextColumn::make('unit')
                     ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
+                TextColumn::make('product_sensors_count')
+                    ->label('Number of Products using this Sensor')
+                    ->counts('productSensors')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->wrap(),
             ])
             ->filters([
                 //

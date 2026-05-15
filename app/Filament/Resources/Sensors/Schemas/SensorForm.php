@@ -14,15 +14,15 @@ class SensorForm
             ->components([
                 TextInput::make('name')
                     ->required(),
-                Select::make('Unit')
+                Select::make('unit')
                     ->required()
                     ->options([
-                        '°C', 
-                        'bar', 
-                        'hPa', 
-                        'L/min', 
-                        'ppm', 
-                        'mg/L',
+                        '°C' => '°C', 
+                        'bar' => 'bar', 
+                        'hPa' => 'hPa', 
+                        'L/min' => 'L/min', 
+                        'ppm' => 'ppm', 
+                        'mg/L' => 'mg/L',
                     ]),
             ]);
     }

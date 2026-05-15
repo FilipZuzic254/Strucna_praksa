@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\Documents\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
@@ -36,13 +35,14 @@ class DocumentsTable
             ])
             ->recordActions([
                 ViewAction::make()
-                    ->url(fn ($record) => asset('storage/documents/' . $record->filename))
+                    ->url(fn ($record) => asset('storage/' . $record->file_path))
                     ->openUrlInNewTab(),
+                DeleteAction::make()
+                    ->before(function ($record) {
+                        Storage::disk('public')->delete($record->file_path);
+                    }),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

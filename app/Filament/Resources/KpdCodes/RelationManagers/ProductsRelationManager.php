@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\KpdCodes\RelationManagers;
 
 use App\Filament\Resources\Products\ProductResource;
-use Filament\Actions\CreateAction;
+use Filament\Actions\ViewAction;
+use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Table;
 
@@ -17,7 +18,20 @@ class ProductsRelationManager extends RelationManager
     {
         return $table
             ->headerActions([
-                CreateAction::make(),
+                Action::make('info')
+                    ->icon('heroicon-o-information-circle')
+                    ->iconButton()
+                    ->tooltip('To edit product KPD code, please edit the product itself.')
+                    ->color('warning'),
+            ])
+            ->recordActions([
+                ViewAction::make()
+                    ->url(fn ($record) => 
+                        ProductResource::getUrl(
+                            'edit',
+                            ['record' => $record->id]
+                        )
+                    )
             ]);
     }
 }

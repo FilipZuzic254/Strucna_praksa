@@ -19,9 +19,16 @@ class KpdCodeSeeder extends Seeder
         fgetcsv($file);
 
         while (($row = fgetcsv($file)) !== false) {
+            $code = trim($row[0]);
+            $name = trim($row[1]);
+
+            if (!preg_match('/^\d{2}\.\d{2}\.\d{2}$/', $code)) {
+                continue;
+            }
+
             KpdCode::insert([
-                'code' => $row[0],
-                'name' => $row[1],
+                'code' => $code,
+                'name' => $name,
             ]);
         }
 

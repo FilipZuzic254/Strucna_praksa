@@ -5,6 +5,7 @@ namespace App\Filament\Resources\TaxExemptions\Tables;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TaxExemptionsTable
 {
@@ -24,6 +25,11 @@ class TaxExemptionsTable
                     ->label('Products')
                     ->sortable(),
             ])
+            ->defaultSort(function (Builder $query): Builder{
+                return $query
+                    ->orderBy('products_count', 'desc')
+                    ->orderBy('code', 'asc');
+            })
             ->filters([
                 //
             ])
