@@ -49,9 +49,9 @@ class GenerateSensorReading implements ShouldQueue
 
     private function checkConsecutiveFaulty()
     {
-        Log::info("Checking consecutive faulty readings for Inventory Item SN {$this->item->serial_number} and Sensor name {$this->sensor->sensor->name}");
-        
-        $faultyStrikes = 3;
+        $faultyStrikes = 0;
+        $minValue = $this->sensor->min_value;
+        $maxValue = $this->sensor->max_value;
 
         $item = InventoryItem::where('id', $this->item->id)
                 ->lockForUpdate()
@@ -68,8 +68,9 @@ class GenerateSensorReading implements ShouldQueue
             ->get();
 
         foreach ($consecutiveReadings as $reading) {
-            if ($reading->value >= $this->sensor->min_value && $reading->value <= $this->sensor->max_value) {
-                $faultyStrikes--;
+            if ($reading->value < $minValue || $reading->value > $maxValue) {
+                $faultyStrikes++;
+                Log::info("Reading value {$reading->value} is outside range for Sensor name {$this->sensor->sensor->name}. Number of strikes: {$faultyStrikes}");
             }
         }
 
@@ -77,7 +78,7 @@ class GenerateSensorReading implements ShouldQueue
             $item->status = 'faulty';
             $item->save();
 
-            Log::warning("Inventory item $item->product_name SN {$item->serial_number} marked as faulty due to 3 consecutive invalid temperature readings.");
+            Log::warning("Inventory item $item->product_name SN {$item->serial_number} marked as faulty due to 3 consecutive invalid readings for sensor {$this->sensor->sensor->name}.");
         }
 
     }
@@ -85,7 +86,7 @@ class GenerateSensorReading implements ShouldQueue
     private function callSensorApi($min, $max)
     {
         if (rand(1, 100) <= 5) {
-            throw new Exception('Pressure API failed');
+            throw new Exception('Sensor API failed');
         }
 
         $pressureRange = rand(0, 100);

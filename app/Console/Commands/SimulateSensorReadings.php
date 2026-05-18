@@ -31,6 +31,8 @@ class SimulateSensorReadings extends Command
         $inventoryItems = InventoryItem::where('status', 'delivered')
             ->orWhere('status', 'replaced')
             ->get();
+
+        
         
         foreach ($inventoryItems as $item) {
             $itemSensors = ProductSensor::where('product_id', $item->product_id)
@@ -40,5 +42,14 @@ class SimulateSensorReadings extends Command
                 GenerateSensorReading::dispatch($item, $sensor);
             }
         }
+
+        /*
+        $itemSensors = ProductSensor::where('product_id', $inventoryItems->first()->product_id)
+                ->get();
+            
+        foreach ($itemSensors as $sensor) {
+            GenerateSensorReading::dispatch($inventoryItems->first(), $sensor);
+        }
+        */
     }
 }

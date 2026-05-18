@@ -55,6 +55,8 @@ class ViewInventoryItem extends ViewRecord
                 'sensorName' => $productSensor->sensor->name,
                 'sensorUnit' => $productSensor->sensor->unit,
                 'sensorNote' => $productSensor->note ?? null,
+                'minValue' => $productSensor->min_value,
+                'maxValue' => $productSensor->max_value,
             ]);
         }
 

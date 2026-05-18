@@ -13,6 +13,8 @@ class SensorReadingChart extends ChartWidget
     public string $sensorName = '';
     public string $sensorUnit = '';
     public ?string $sensorNote = '';
+    public int $minValue = 0;
+    public int $maxValue = 0;
 
     protected int | string | array $columnSpan = 'full';
     protected ?string $maxHeight = '20vh';
@@ -20,12 +22,13 @@ class SensorReadingChart extends ChartWidget
 
     public function getHeading(): string
     {
-        return "{$this->sensorName} chart ({$this->sensorUnit})";
+        return "{$this->sensorName} chart ({$this->minValue} - {$this->maxValue} {$this->sensorUnit})";
     }
 
     public function getDescription(): ?string
     {
-        return $this->sensorNote;
+        $description = "Expected range: {$this->minValue} - {$this->maxValue}\n{$this->sensorNote}";
+        return $description;
     }
 
     protected function getData(): array

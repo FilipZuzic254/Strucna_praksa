@@ -18,7 +18,7 @@ class DocumentSeeder extends Seeder
         Storage::disk('public')->makeDirectory('documents');
         
         Document::factory()
-            ->connectedProducts(4)
+            ->connectedProducts(50)
             ->count(10)
             ->create();
     }
