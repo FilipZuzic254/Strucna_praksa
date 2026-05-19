@@ -7,6 +7,8 @@ use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class DocumentsTable
 {
@@ -31,7 +33,27 @@ class DocumentsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('type')
+                    ->options([
+                        'pdf' => 'PDF',
+                        'doc' => 'Word/doc',
+                        'docx' => 'Word/docx',
+                        'xls' => 'Excel/xls',
+                        'xlsx' => 'Excel/xlsx',
+                        'jpg' => 'JPG',
+                        'png' => 'PNG',
+                        'txt' => 'Text',
+                    ])
+                    ->multiple()
+                    ->query(function (Builder $query, array $data) {
+                        if (!empty($data['values'])) {
+                            $query->where(function ($q) use ($data) {
+                                foreach ($data['values'] as $type) {
+                                    $q->orWhere('file_name', 'like', '%.' . $type);
+                                }
+                            });
+                        }
+                    }),
             ])
             ->recordActions([
                 ViewAction::make()
@@ -43,6 +65,7 @@ class DocumentsTable
                     }),
             ])
             ->toolbarActions([
-            ]);
+            ])
+            ->striped();
     }
 }

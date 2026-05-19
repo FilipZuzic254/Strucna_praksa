@@ -17,9 +17,17 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@test.com',
+            'name' => 'Marin Pavlic',
+            'email' => 'marin.pavlic@vodissima.hr',
             'password' => 'admin',
+            'role' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Shop manager',
+            'email' => 'shop.manager@vodissima.hr',
+            'password' => 'test',
+            'role' => 'shop_manager',
         ]);
 
         $this->call([

@@ -45,16 +45,6 @@ class InventoryItem extends Model
     public function deliveryItem()
     {
         return $this->hasMany(DeliveryItem::class);
-    } 
-
-    public function temperatureReadings()
-    {
-        return $this->hasMany(TemperatureReading::class);
-    }
-
-    public function pressureReadings()
-    {
-        return $this->hasMany(PressureReading::class);
     }
 
     public function sensorReadings()

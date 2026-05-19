@@ -7,12 +7,14 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Collection;
 
 class InventoryItemsTable
 {
@@ -92,7 +94,15 @@ class InventoryItemsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    BulkAction::make('exportSensors')
+                        ->label('Export Sensor Data')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->action(function (Collection $records) {
+                            $ids = $records->pluck('id')->join(',');
+                            return redirect()->away(route('items.sensors.export', ['item_ids' => $ids]));
+                        }),
                 ]),
-            ]);
+            ])
+            ->striped();
     }
 }

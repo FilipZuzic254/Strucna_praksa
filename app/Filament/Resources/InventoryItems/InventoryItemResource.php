@@ -21,6 +21,10 @@ class InventoryItemResource extends Resource
     protected static ?string $model = InventoryItem::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquaresPlus;
+    
+    protected static ?string $pluralModelLabel  = 'Stock';
+
+    protected static ?string $recordTitleAttribute = 'serial_number';
 
     public static function form(Schema $schema): Schema
     {
@@ -48,4 +52,6 @@ class InventoryItemResource extends Resource
             'edit' => EditInventoryItem::route('/{record}/edit'),
         ];
     }
+
+    
 }

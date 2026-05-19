@@ -22,6 +22,7 @@ class DocumentForm
                     ->label('Upload Document')
                     ->directory('documents')
                     ->disk('public')
+                    ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
                     ->getUploadedFileNameForStorageUsing(
                         function (TemporaryUploadedFile $file) {
 

@@ -20,7 +20,7 @@ class DocumentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentDuplicate;
 
-    protected static ?string $recordTitleAttribute = 'filename';
+    protected static ?string $recordTitleAttribute = 'file_name';
 
     public static function form(Schema $schema): Schema
     {
@@ -46,5 +46,10 @@ class DocumentResource extends Resource
             'create' => CreateDocument::route('/create'),
             'edit' => EditDocument::route('/{record}/edit'),
         ];
+    }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdmin();
     }
 }

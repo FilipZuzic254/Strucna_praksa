@@ -12,9 +12,12 @@ use App\Models\InventoryItem;
 class SoonExpiring extends TableWidget
 {
     protected static ?string $heading = 'Soon Expiring Warranties';
+    
+
     public function table(Table $table): Table
     {
         return $table
+            ->extraAttributes(['class' => 'soon-expiring-table'])
             ->query(
                 fn (): Builder => InventoryItem::query()
                     ->whereNotNull('warranty_expires_at')

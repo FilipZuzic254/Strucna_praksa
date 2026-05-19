@@ -4,11 +4,13 @@ namespace App\Filament\Resources\Products\Tables;
 
 use App\Models\Product;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductsTable
 {
@@ -60,7 +62,15 @@ class ProductsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    BulkAction::make('exportSensors')
+                        ->label('Export Sensor Data')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->action(function (Collection $records) {
+                            $ids = $records->pluck('id')->join(',');
+                            return redirect()->away(route('products.sensors.export', ['product_ids' => $ids]));
+                        }),
                 ]),
-            ]);
+            ])
+            ->striped();
     }
 }

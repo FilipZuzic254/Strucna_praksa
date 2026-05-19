@@ -54,7 +54,8 @@ class ClientsTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->striped();
             
     }
 }

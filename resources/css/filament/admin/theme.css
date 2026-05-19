@@ -1,0 +1,40 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+
+
+.fi-wi-widget .fi-ta-header{
+    background-color: var(--primary-600);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.soon-expiring-table .fi-ta-header{
+    background-color: var(--color-orange-500);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.fi-wi-widget .fi-ta-table thead tr{
+    background-color: var(--color-gray-50);
+}
+
+.fi-topbar{
+    /* background-color: var(--primary-600); */
+    background-color: #68B9DD;
+}
+
+.footer{
+    background-color: var(--primary-600);
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid var(--color-gray-200);
+}
+
+.fi-ta-table thead tr{
+    background-color: var(--primary-300);
+}
+
+.fi-ta-table thead tr .fi-icon{
+    color: var(--color-gray-700);
+}
