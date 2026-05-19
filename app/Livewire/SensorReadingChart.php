@@ -22,12 +22,12 @@ class SensorReadingChart extends ChartWidget
 
     public function getHeading(): string
     {
-        return "{$this->sensorName} chart ({$this->minValue} - {$this->maxValue} {$this->sensorUnit})";
+        return "{$this->sensorName} chart ({$this->sensorUnit})";
     }
 
     public function getDescription(): ?string
     {
-        $description = "Expected range: {$this->minValue} - {$this->maxValue}\n{$this->sensorNote}";
+        $description = "Expected range: {$this->minValue} - {$this->maxValue}. \n {$this->sensorNote}";
         return $description;
     }
 

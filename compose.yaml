@@ -1,5 +1,7 @@
 services:
     laravel.test:
+        security_opt:
+            - apparmor=unconfined
         build:
             context: ./vendor/laravel/sail/runtimes/8.5
             dockerfile: Dockerfile
@@ -22,10 +24,11 @@ services:
         networks:
             - sail
         depends_on:
-            - pgsql
             - redis
             - mailpit
     pgsql:
+        profiles:
+            - donotstart
         image: 'postgres:18-alpine'
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
