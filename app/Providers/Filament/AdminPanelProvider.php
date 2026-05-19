@@ -35,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->brandLogo(asset('storage/logo.png'))
+            ->brandLogo(asset('images/logo.png'))
             ->login()
             ->colors([
                 'primary' => '#0084BC',
