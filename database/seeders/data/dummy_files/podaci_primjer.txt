@@ -1,0 +1,4 @@
+IME;PREZIME;EMAIL
+Ivan;Horvat;ivan.h@example.com
+Ana;Kovač;ana.k@example.com
+Marko;Marić;marko.m@example.com

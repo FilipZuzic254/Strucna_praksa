@@ -1,0 +1,3 @@
+Dobrodošli u demo aplikaciju.
+
+Ovo je obična tekstualna datoteka koja služi kao primjer osnovne dokumentacije.

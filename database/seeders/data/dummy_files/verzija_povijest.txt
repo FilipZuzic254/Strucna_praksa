@@ -1,0 +1,3 @@
+v1.0.0 - Inicijalni demo build
+v0.9.5 - Popravak bugova u PDF izvozu
+v0.9.0 - Beta testiranje sučelja

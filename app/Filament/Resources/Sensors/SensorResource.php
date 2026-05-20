@@ -49,8 +49,5 @@ class SensorResource extends Resource
         ];
     }
 
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isAdmin();
-    }
+
 }

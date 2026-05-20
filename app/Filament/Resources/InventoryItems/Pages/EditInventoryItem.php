@@ -16,4 +16,10 @@ class EditInventoryItem extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+        ];
+    }
 }

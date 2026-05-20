@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Resources\InventoryItems\InventoryItemResource;
 use App\Filament\Resources\Clients\ClientResource;
+use App\Filament\Resources\Components\ComponentResource;
 use App\Filament\Resources\Deliveries\DeliveryResource;
 use App\Filament\Resources\Documents\DocumentResource;
 use App\Filament\Resources\Products\ProductResource;
@@ -46,6 +47,7 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
                 ProductResource::class,
                 InventoryItemResource::class,
+                ComponentResource::class,
                 SensorResource::class,
                 DocumentResource::class,
                 ClientResource::class,

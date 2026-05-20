@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\InventoryItems\Pages;
 
 use App\Filament\Resources\InventoryItems\InventoryItemResource;
-use App\Livewire\AvailableItemDocuments;
+use App\Livewire\ItemDocuments;
 use App\Livewire\SensorReadingChart;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
@@ -37,7 +37,7 @@ class ViewInventoryItem extends ViewRecord
     {
         $widgets = $this->generateSensorCharts();
 
-        array_unshift($widgets, AvailableItemDocuments::make());
+        array_unshift($widgets, ItemDocuments::make(['product_id' => $this->record->product_id]));
 
         return $widgets;
     }

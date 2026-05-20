@@ -19,13 +19,33 @@ class DocumentFactory extends Factory
     public function definition(): array
     {
 
-        $filename = fake()->unique()->word() . '.txt';
+        $files = [
+            'Korisnicka_Podrska.docx',
+            'Uvjeti_Koristenja_Demo.docx',
+            'Uvod_u_Sustav.docx',
+            'konfiguracija_napomena.txt',
+            'podaci_primjer.txt',
+            'procitaj_me.txt',
+            'quick_start_guide.pdf',
+            'sample_manual.pdf',
+            'technical_specs.pdf',
+            'verzija_povijest.txt'
+        ];
 
-        Storage::disk('public/documents')->put($filename, fake()->text(2000));
+        $filename = fake()->randomElement($files);
+        
+        $sourcePath = database_path('seeders/data/dummy_files/' . $filename);
+        $uniqueFilename = fake()->unique()->numerify('####') . '_' . $filename;
+        $storagePath = 'documents/' . $uniqueFilename;
+
+        Storage::disk('public')->put(
+            $storagePath,
+            file_get_contents($sourcePath)
+        );
 
         return [
-            'file_name' => $filename,
-            'file_path' => 'documents/' . $filename,
+            'file_name' => $uniqueFilename,
+            'file_path' => $storagePath,
         ];
     }
 

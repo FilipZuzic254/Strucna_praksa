@@ -10,6 +10,8 @@ use App\Filament\Resources\InventoryItems\Schemas\InventoryItemForm;
 use App\Filament\Resources\InventoryItems\Tables\InventoryItemsTable;
 use App\Models\InventoryItem;
 use App\Filament\Resources\InventoryItems\RelationManagers\ServiceLogsRelationManager;
+use App\Filament\Resources\InventoryItems\RelationManagers\DeliveryItemRelationManager;
+use App\Filament\Resources\InventoryItems\RelationManagers\ItemComponentsRelationManager;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -39,6 +41,8 @@ class InventoryItemResource extends Resource
     public static function getRelations(): array
     {
         return [
+            DeliveryItemRelationManager::class,
+            ItemComponentsRelationManager::class,
             ServiceLogsRelationManager::class,
         ];
     }

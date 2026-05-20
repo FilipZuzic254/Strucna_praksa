@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             ClientSeeder::class,
             DeliverySeeder::class,
             SensorSeeder::class,
+            ComponentSeeder::class,
             ProductSeeder::class,
             DocumentSeeder::class,
         ]);

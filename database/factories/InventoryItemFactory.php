@@ -8,6 +8,8 @@ use App\Models\ServiceLog;
 use App\Models\Delivery;
 use App\Models\DeliveryItem;
 use App\Models\InventoryItem;
+use App\Models\ProductComponent;
+use App\Models\ComponentItem;
 use Illuminate\Support\Carbon;
 
 /**
@@ -33,13 +35,33 @@ class InventoryItemFactory extends Factory
     public function inStock()
     {
         return $this->state(function () {
+
             return [
                 'status' => 'in_stock',
                 'purchased_at' => null,
                 'warranty_expires_at' => null,
             ];
+
+        })
+        ->afterCreating(function (InventoryItem $item) {
+            $productComponents = ProductComponent::where('product_id', $item->product_id)->get();
+
+            foreach ($productComponents as $component) {
+                $itemComponent = ComponentItem::where('component_id', $component->component_id)
+                    ->where('status', 'in_stock')
+                    ->first();
+                
+                if ($itemComponent) {
+                    $itemComponent->update([
+                        'inventory_item_id' => $item->id,
+                        'status' => 'installed',
+                    ]);
+                }
+            }
         });
     }
+
+
 
     public function delivered()
     {
@@ -58,7 +80,25 @@ class InventoryItemFactory extends Factory
                 'purchased_at' => $purchace_date,
                 'installed_at' => $installation_date,
             ];
-        })->has(
+        })
+        ->afterCreating(function (InventoryItem $item) {
+            $productComponents = ProductComponent::where('product_id', $item->product_id)->get();
+
+            foreach ($productComponents as $component) {
+                $itemComponent = ComponentItem::where('component_id', $component->component_id)
+                    ->where('status', 'in_stock')
+                    ->first();
+                
+                if ($itemComponent) {
+                    $itemComponent->update([
+                        'inventory_item_id' => $item->id,
+                        'status' => 'installed',
+                        'installed_at' => $item->installed_at,
+                    ]);
+                }
+            }
+        })
+        ->has(
             DeliveryItem::factory()->state(function (array $attributes, InventoryItem $item) {
                 $delivery = Delivery::inRandomOrder()->first();
 
@@ -69,6 +109,8 @@ class InventoryItemFactory extends Factory
             'deliveryItem'
         );
     }
+
+
 
     public function faulty()
     {
@@ -87,7 +129,25 @@ class InventoryItemFactory extends Factory
                 'purchased_at' => $purchace_date,
                 'installed_at' => $installation_date,
             ];
-        })->has(
+        })
+        ->afterCreating(function (InventoryItem $item) {
+            $productComponents = ProductComponent::where('product_id', $item->product_id)->get();
+
+            foreach ($productComponents as $component) {
+                $itemComponent = ComponentItem::where('component_id', $component->component_id)
+                    ->where('status', 'in_stock')
+                    ->first();
+                
+                if ($itemComponent) {
+                    $itemComponent->update([
+                        'inventory_item_id' => $item->id,
+                        'status' => 'installed',
+                        'installed_at' => $item->installed_at,
+                    ]);
+                }
+            }
+        })
+        ->has(
             ServiceLog::factory()->state(function (array $attributes, InventoryItem $item) {
 
                 $endDate = $item->warranty_expires_at && $item->warranty_expires_at < now() ? $item->warranty_expires_at : now();
@@ -99,7 +159,8 @@ class InventoryItemFactory extends Factory
                 ];
             }),
             'serviceLogs'
-        )->has(
+        )
+        ->has(
             DeliveryItem::factory()->state(function (array $attributes, InventoryItem $item) {
                 $delivery = Delivery::inRandomOrder()->first();
 
@@ -110,6 +171,8 @@ class InventoryItemFactory extends Factory
             'deliveryItem'
         );
     }
+
+
 
     public function replaced()
     {
@@ -128,7 +191,25 @@ class InventoryItemFactory extends Factory
                 'purchased_at' => $purchace_date,
                 'installed_at' => $installation_date,
             ];
-        })->has(
+        })
+        ->afterCreating(function (InventoryItem $item) {
+            $productComponents = ProductComponent::where('product_id', $item->product_id)->get();
+
+            foreach ($productComponents as $component) {
+                $itemComponent = ComponentItem::where('component_id', $component->component_id)
+                    ->where('status', 'in_stock')
+                    ->first();
+                
+                if ($itemComponent) {
+                    $itemComponent->update([
+                        'inventory_item_id' => $item->id,
+                        'status' => 'installed',
+                        'installed_at' => $item->installed_at,
+                    ]);
+                }
+            }
+        })
+        ->has(
             ServiceLog::factory()->state(function (array $attributes, InventoryItem $item) {
 
                 $endDate = $item->warranty_expires_at && $item->warranty_expires_at < now() ? $item->warranty_expires_at : now();
@@ -140,7 +221,8 @@ class InventoryItemFactory extends Factory
                 ];
             }),
             'serviceLogs'
-        )->has(
+        )
+        ->has(
             DeliveryItem::factory()->state(function (array $attributes, InventoryItem $item) {
                 $delivery = Delivery::inRandomOrder()->first();
 

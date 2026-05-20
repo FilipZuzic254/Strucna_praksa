@@ -2,19 +2,23 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\Products\ProductResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Product;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductCount extends TableWidget
 {
     protected static ?string $heading = 'Product Item Counts';
+
     public function table(Table $table): Table
     {
         return $table
+            ->extraAttributes(['class' => 'product-item-count-table'])
             ->query(fn (): Builder => Product::query())
             ->columns([
                 TextColumn::make('name')
@@ -41,6 +45,7 @@ class ProductCount extends TableWidget
             ->recordActions([
                 //
             ])
+            ->recordUrl(fn (Model $record): string => ProductResource::getUrl('view', ['record' => $record]))
             ->toolbarActions([
                 BulkActionGroup::make([
                     //

@@ -55,10 +55,8 @@ class DocumentsTable
                         }
                     }),
             ])
+            ->recordUrl(fn ($record) => asset('storage/' . $record->file_path))
             ->recordActions([
-                ViewAction::make()
-                    ->url(fn ($record) => asset('storage/' . $record->file_path))
-                    ->openUrlInNewTab(),
                 DeleteAction::make()
                     ->before(function ($record) {
                         Storage::disk('public')->delete($record->file_path);

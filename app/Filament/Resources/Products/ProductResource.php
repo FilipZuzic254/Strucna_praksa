@@ -5,9 +5,11 @@ namespace App\Filament\Resources\Products;
 use App\Filament\Resources\Products\Pages\CreateProduct;
 use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;
+use App\Filament\Resources\Products\Pages\ViewProduct;
 use App\Filament\Resources\Products\RelationManagers\InventoryItemsRelationManager;
 use App\Filament\Resources\Products\RelationManagers\DocumentsRelationManager;
 use App\Filament\Resources\Products\RelationManagers\ProductSensorRelationManager;
+use App\Filament\Resources\Products\RelationManagers\ComponentsRelationManager;
 use App\Filament\Resources\Products\Schemas\ProductForm;
 use App\Filament\Resources\Products\Tables\ProductsTable;
 use App\Models\Product;
@@ -41,6 +43,7 @@ class ProductResource extends Resource
         return [
             DocumentsRelationManager::class,
             InventoryItemsRelationManager::class,
+            ComponentsRelationManager::class,
             ProductSensorRelationManager::class,
         ];
     }
@@ -51,16 +54,8 @@ class ProductResource extends Resource
             'index' => ListProducts::route('/'),
             'create' => CreateProduct::route('/create'),
             'edit' => EditProduct::route('/{record}/edit'),
+            'view' => ViewProduct::route('/{record}'),
         ];
     }
 
-    public static function editAny(Model $record): bool
-    {
-        return auth()->user()->isAdmin();
-    }
-
-    public static function deleteAny(Model $record): bool
-    {
-        return auth()->user()->isAdmin();
-    }
 }

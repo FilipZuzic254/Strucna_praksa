@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventory_items', function (Blueprint $table) {
+        Schema::create('component_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('component_id')->constrained()->onDelete('cascade');
+            $table->foreignId('inventory_item_id')->nullable()->constrained()->onDelete('set null');
             $table->string('serial_number')->unique();
-            $table->enum('status', ['in_stock', 'delivered', 'faulty', 'replaced'])->default('in_stock');
-            $table->date('purchased_at')->nullable();
+            $table->enum('status', ['in_stock', 'installed', 'faulty'])->default('in_stock');
             $table->date('installed_at')->nullable();
             $table->date('warranty_expires_at')->nullable();
-            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventory_items');
+        Schema::dropIfExists('component_items');
     }
 };

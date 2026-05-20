@@ -59,4 +59,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductSensor::class);
     }
+
+    public function components()
+    {
+        return $this->belongsToMany(Component::class, 'product_components');
+    }
 }

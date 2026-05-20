@@ -5,7 +5,7 @@
 
 
 
-.fi-wi-widget .fi-ta-header{
+.product-item-count-table .fi-ta-header{
     background-color: var(--primary-600);
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
@@ -16,7 +16,11 @@
 }
 
 .fi-wi-widget .fi-ta-table thead tr{
-    background-color: var(--color-gray-50);
+    background-color: var(--primary-300);
+}
+
+.product-item-count-table thead tr, .soon-expiring-table thead tr{
+    background-color: var(--color-gray-50) !important;
 }
 
 .fi-topbar{

@@ -76,13 +76,15 @@ class ProductSeeder extends Seeder
 
         fclose($file);
 
+        $this->call(ProductComponentSeeder::class);
+
         Product::get()
             ->each(function ($product) {
                 ProductSensor::factory()->count(rand(1, 3))->for($product)->create();
-                InventoryItem::factory()->count(rand(3, 5))->for($product)->inStock()->create();
-                InventoryItem::factory()->count(rand(3, 5))->for($product)->delivered()->create();
-                InventoryItem::factory()->count(rand(1, 3))->for($product)->replaced()->create();
-                InventoryItem::factory()->count(rand(1, 3))->for($product)->faulty()->create();
+                InventoryItem::factory()->count(rand(2, 3))->for($product)->inStock()->create();
+                InventoryItem::factory()->count(rand(2, 3))->for($product)->delivered()->create();
+                InventoryItem::factory()->count(rand(1, 2))->for($product)->replaced()->create();
+                InventoryItem::factory()->count(rand(1, 2))->for($product)->faulty()->create();
             });
     }
 }

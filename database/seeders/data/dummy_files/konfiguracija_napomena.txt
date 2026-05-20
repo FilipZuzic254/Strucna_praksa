@@ -1,0 +1,5 @@
+SERVER_URL=https://api.demo-app.com
+TIMEOUT=30s
+DEBUG=true
+
+Napomena: Koristite ove postavke samo u testnom okruženju.
