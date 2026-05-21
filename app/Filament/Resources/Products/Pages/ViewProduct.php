@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Products\Pages;
 
 use App\Filament\Resources\Products\ProductResource;
+use App\Livewire\GalleryWidget;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -16,4 +17,13 @@ class ViewProduct extends ViewRecord
             EditAction::make(),
         ];
     }
+
+    protected function getFooterWidgets(): array
+{
+    return [
+        GalleryWidget::make([
+            'productId' => $this->record->id,
+        ]),
+    ];
+}
 }

@@ -7,6 +7,7 @@ use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Components\ComponentResource;
 use App\Filament\Resources\Deliveries\DeliveryResource;
 use App\Filament\Resources\Documents\DocumentResource;
+use App\Filament\Resources\Galleries\GalleryResource;
 use App\Filament\Resources\Products\ProductResource;
 use App\Filament\Resources\Sensors\SensorResource;
 use Filament\Http\Middleware\Authenticate;
@@ -50,6 +51,7 @@ class AdminPanelProvider extends PanelProvider
                 ComponentResource::class,
                 SensorResource::class,
                 DocumentResource::class,
+                GalleryResource::class,
                 ClientResource::class,
                 DeliveryResource::class,
             ])

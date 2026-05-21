@@ -8,6 +8,8 @@ use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Collection;
@@ -18,6 +20,10 @@ class ProductsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('header_image_path')
+                    ->label('Header Image')
+                    ->square()
+                    ->imageHeight(50),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -56,6 +62,7 @@ class ProductsTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

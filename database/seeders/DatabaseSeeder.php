@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             DeliverySeeder::class,
             SensorSeeder::class,
             ComponentSeeder::class,
+            GallerySeeder::class,
             ProductSeeder::class,
             DocumentSeeder::class,
         ]);

@@ -9,6 +9,8 @@ use App\Models\KpdCode;
 use App\Models\TaxExemption;
 use App\Models\InventoryItem;
 use App\Models\ProductSensor;
+use App\Models\Gallery;
+use App\Models\GalleryImage;
 
 use Illuminate\Support\Facades\Log;
 
@@ -60,6 +62,20 @@ class ProductSeeder extends Seeder
                 $exemptionId = null;
             }
 
+            $galleries = Gallery::orderByRaw('LENGTH(name) DESC')->get();
+            $matchingGallery = $galleries->firstWhere(function ($gallery) use ($name) {
+                return str_contains($name, $gallery->name);
+            });
+
+            if ($matchingGallery) {
+                $galleryId = $matchingGallery->id;
+                $headerImageId = GalleryImage::where('gallery_id', $galleryId)->orderBy('sort_order')->first()->id ?? null;
+            }
+            else {
+                $galleryId = null;
+                $headerImageId = null;
+            }
+
             Product::insert([
                 'name' => $name,
                 'sku' => $sku,
@@ -71,6 +87,8 @@ class ProductSeeder extends Seeder
                 'tax_exemption_id' => $exemptionId,
                 'description' => $description,
                 'warranty_months' => fake()->randomElement([6, 12, 24, 36, 48, 60]),
+                'gallery_id' => $galleryId,
+                'header_image_id' => $headerImageId,
             ]);
         }
 

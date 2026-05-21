@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Models\GalleryImage;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -73,17 +74,49 @@ class ProductForm
                     ->searchable(['code', 'description'])
                     ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->code} - {$record->description}")
                     ->preload()
-                    ->visible(fn (Get $get) => $get('tax_rate') === '0%')
-                    ->required(fn (Get $get) => $get('tax_rate') === '0%'),
+                    ->visible(fn (Get $get) => $get('tax_rate') === '0')
+                    ->required(fn (Get $get) => $get('tax_rate') === '0'),
 
                 TextInput::make('discount')
                     ->numeric()
                     ->minValue(0)
                     ->maxValue(100),
                 
+
+                Select::make('gallery_id')
+                    ->label('Gallery')
+                    ->relationship('gallery', 'id')
+                    ->searchable(['name'])
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
+                    ->preload()
+                    ->live()
+                    ->nullable(),
+
+                Select::make('header_image_path')
+                    ->label('Header Image')
+                    ->options(function (Get $get) {
+                        $galleryId = $get('gallery_id');
+                        
+                        if (!$galleryId) {
+                            return [];
+                        }
+
+                        return GalleryImage::where('gallery_id', $galleryId)
+                            ->get()
+                            ->mapWithKeys(fn ($image) => [
+                                $image->id => $image->name ?? basename($image->image_path)
+                            ]);
+                    })
+                    ->nullable()
+                    ->visible(fn (Get $get) => $get('gallery_id') !== null),
+
+                    
                 Textarea::make('description')
                     ->maxLength(1000)
-                    ->autosize(),
+                    ->autosize()
+                    ->columnSpan(function (Get $get) {
+                        return $get('gallery_id') ? 2 : 1;
+                    }),
                 
             ]);
     }

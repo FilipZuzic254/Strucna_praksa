@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreignId('tax_exemption_id')->nullable()->constrained()->onDelete('set null');
             $table->string('description', 1000)->nullable();
             $table->integer('warranty_months')->default(24);
+            $table->foreignId('gallery_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('header_image_id')->nullable()->constrained('gallery_images')->onDelete('set null');
             $table->timestamps();
         });
     }

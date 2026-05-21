@@ -18,6 +18,8 @@ class Product extends Model
         'tax_exemption_id',
         'description',
         'warranty_months',
+        'gallery_id',
+        'header_image_id',
     ];
 
     /** @use HasFactory<\Database\Factories\ProductFactory> */
@@ -63,5 +65,15 @@ class Product extends Model
     public function components()
     {
         return $this->belongsToMany(Component::class, 'product_components');
+    }
+
+    public function gallery()
+    {
+        return $this->belongsTo(Gallery::class);
+    }
+
+    public function headerImage()
+    {
+        return $this->belongsTo(GalleryImage::class, 'header_image_id');
     }
 }
