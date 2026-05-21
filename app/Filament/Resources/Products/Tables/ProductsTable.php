@@ -20,10 +20,11 @@ class ProductsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('header_image_path')
+                ImageColumn::make('headerImage.image_path')
                     ->label('Header Image')
                     ->square()
-                    ->imageHeight(50),
+                    ->imageHeight(50)
+                    ->disk('public'),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),

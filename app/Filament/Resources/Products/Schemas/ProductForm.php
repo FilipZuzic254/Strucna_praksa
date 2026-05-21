@@ -92,7 +92,7 @@ class ProductForm
                     ->live()
                     ->nullable(),
 
-                Select::make('header_image_path')
+                Select::make('header_image_id')
                     ->label('Header Image')
                     ->options(function (Get $get) {
                         $galleryId = $get('gallery_id');
