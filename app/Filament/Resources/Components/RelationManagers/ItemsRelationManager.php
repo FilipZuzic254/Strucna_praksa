@@ -33,7 +33,7 @@ class ItemsRelationManager extends RelationManager
                 TextInput::make('serial_number')
                     ->required(),
                 TextInput::make('status')
-                    ->required()
+                    ->disabled()
                     ->default('in_stock'),
                 DatePicker::make('installed_at'),
                 DatePicker::make('warranty_expires_at')

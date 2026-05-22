@@ -28,6 +28,7 @@ class InventoryItemForm
                     ->required(),
                 Select::make('status')
                     ->required()
+                    ->disabledOn('create')
                     ->default('in_stock')
                     ->options([
                         'in_stock' => 'In Stock',
