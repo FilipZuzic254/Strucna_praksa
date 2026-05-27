@@ -43,7 +43,7 @@ class ProductSensorsRelationManager extends RelationManager
                 ViewAction::make()
                     ->url(fn ($record) => 
                         ProductResource::getUrl(
-                            'edit',
+                            'view',
                             ['record' => $record->product_id]
                         )
                     )

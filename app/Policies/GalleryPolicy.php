@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Product;
 use App\Models\User;
 
-class ProductPolicy
+class GalleryPolicy
 {
     /**
      * Create a new policy instance.
@@ -15,21 +14,11 @@ class ProductPolicy
         //
     }
 
-    public function create(User $user): bool
-    {
-        return $user->isAdmin();
-    }
-
-    public function update(User $user): bool
+    public function viewAny(User $user): bool
     {
         if ($user->isAdmin() || $user->isShopManager()) {
             return true;
         }
         return false;
-    }
-
-    public function delete(User $user): bool
-    {
-        return $user->isAdmin();
     }
 }

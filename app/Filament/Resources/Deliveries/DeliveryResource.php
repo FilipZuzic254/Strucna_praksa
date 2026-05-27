@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Deliveries;
 use App\Filament\Resources\Deliveries\Pages\CreateDelivery;
 use App\Filament\Resources\Deliveries\Pages\EditDelivery;
 use App\Filament\Resources\Deliveries\Pages\ListDeliveries;
+use App\Filament\Resources\Deliveries\Pages\ViewDelivery;
 use App\Filament\Resources\Deliveries\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\Deliveries\Schemas\DeliveryForm;
 use App\Filament\Resources\Deliveries\Tables\DeliveriesTable;
@@ -44,6 +45,7 @@ class DeliveryResource extends Resource
             'index' => ListDeliveries::route('/'),
             'create' => CreateDelivery::route('/create'),
             'edit' => EditDelivery::route('/{record}/edit'),
+            'view' => ViewDelivery::route('/{record}'),
         ];
     }
 }

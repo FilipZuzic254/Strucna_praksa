@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('inventory_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained();
-            $table->string('serial_number')->unique();
+            $table->string('sku')->unique();
             $table->enum('status', ['in_stock', 'delivered', 'faulty', 'replaced'])->default('in_stock');
             $table->date('purchased_at')->nullable();
             $table->date('installed_at')->nullable();

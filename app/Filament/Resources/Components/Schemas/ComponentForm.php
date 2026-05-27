@@ -18,11 +18,11 @@ class ComponentForm
                 Select::make('warranty_months')
                     ->options([
                         6 => '6 months',
-                        12 => '12 months',
-                        24 => '24 months',
-                        36 => '36 months',
-                        48 => '48 months',
-                        60 => '60 months',
+                        12 => '1 year',
+                        24 => '2 years',
+                        36 => '3 years',
+                        48 => '4 years',
+                        60 => '5 years',
                     ])
                     ->default(24)
                     ->required(),

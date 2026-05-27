@@ -3,10 +3,12 @@
 namespace App\Filament\Resources\InventoryItems\RelationManagers;
 
 use Filament\Actions\ViewAction;
+use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use App\Filament\Resources\Clients\ClientResource;
+use App\Filament\Resources\Deliveries\DeliveryResource;
 
 class DeliveryItemRelationManager extends RelationManager
 {
@@ -44,6 +46,17 @@ class DeliveryItemRelationManager extends RelationManager
                     ->url(fn ($record) => ClientResource::getUrl('view', ['record' => $record->delivery->client_id])),
             ])
             ->emptyStateHeading('No clients yet')
+            ->headerActions([
+                Action::make('viewDelivery')
+                    ->url(fn () => DeliveryResource::getUrl('view', ['record' => $this->getOwnerRecord()->deliveryItem?->delivery_id]))
+                    ->visible(fn () => $this->getOwnerRecord()->deliveryItem?->delivery_id !== null),
+                Action::make('createDelivery')
+                    ->url(DeliveryResource::getUrl('create'))
+                    ->visible(fn () => $this->getOwnerRecord()->deliveryItem?->delivery_id === null),
+                Action::make('createClient')
+                    ->url(ClientResource::getUrl('create'))
+                    ->visible(fn () => $this->getOwnerRecord()->deliveryItem?->delivery_id === null && !auth()->user()->isTechnician()),
+            ])
             ->paginated(false);
     }
 }

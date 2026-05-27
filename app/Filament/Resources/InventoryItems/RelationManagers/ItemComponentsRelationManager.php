@@ -68,6 +68,13 @@ class ItemComponentsRelationManager extends RelationManager
             ])
             ->headerActions([
                 AssociateAction::make()
+                    ->label('Add component')
+                    ->modalHeading('Add component to item')
+                    ->modalSubmitActionLabel('Add')
+                    ->extraModalFooterActions(fn (AssociateAction $action): array => [
+                        $action->makeModalSubmitAction('associateAnother', arguments: ['another' => true])
+                            ->label('Save and add another'),
+                    ])
                     ->recordSelect(fn (Select $select) => $select
                         ->searchable()
                         ->getSearchResultsUsing(function (string $search) {

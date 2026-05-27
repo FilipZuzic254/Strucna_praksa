@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Deliveries\RelationManagers;
 
+use App\Filament\Resources\InventoryItems\InventoryItemResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -13,6 +14,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Table;
 use App\Models\InventoryItem;
+use Filament\Actions\ViewAction;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -26,14 +28,14 @@ class ItemsRelationManager extends RelationManager
                     ->label('Inventory Item')
                     ->relationship(
                         name: 'inventoryItem',
-                        titleAttribute: 'serial_number',
+                        titleAttribute: 'sku',
                     )
                     ->searchable()
                     ->getSearchResultsUsing(function (string $search) {
                         return InventoryItem::query()
                             ->where('status', 'in_stock')
                             ->where(function ($query) use ($search) {
-                                $query->where('serial_number', 'ilike', "%{$search}%")
+                                $query->where('sku', 'ilike', "%{$search}%")
                                     ->orWhereHas('product', function ($q) use ($search) {
                                         $q->where('name', 'ilike', "%{$search}%");
                                     });
@@ -41,12 +43,12 @@ class ItemsRelationManager extends RelationManager
                             ->limit(50)
                             ->get()
                             ->mapWithKeys(fn ($item) => [
-                                $item->id => $item->product->name . ' - ' . $item->serial_number,
+                                $item->id => $item->product->name . ' - ' . $item->sku,
                             ])
                             ->toArray();
                     })
                     ->getOptionLabelFromRecordUsing(fn ($record) =>
-                        $record->product->name . ' - ' . $record->serial_number
+                        $record->product->name . ' - ' . $record->sku
                     )
                     ->required(),
             ]);
@@ -60,7 +62,7 @@ class ItemsRelationManager extends RelationManager
                 TextColumn::make('inventoryItem.product.name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('inventoryItem.serial_number')
+                TextColumn::make('inventoryItem.sku')
                     ->searchable()
                     ->sortable(),
             ])
@@ -74,9 +76,18 @@ class ItemsRelationManager extends RelationManager
                     }),
             ])
             ->recordActions([
+                ViewAction::make()
+                    ->url(fn ($record) => InventoryItemResource::getUrl('view', ['record' => $record->inventory_item_id])),
                 DeleteAction::make()
                     ->after(function ($record) {
-                        $record->inventoryItem->update(['status' => 'in_stock', 'purchased_at' => null]);
+                        $itemStatus = $record->inventoryItem->status;
+                        
+                        if ($itemStatus === 'delivered' || $itemStatus === 'replaced') {
+                            $record->inventoryItem->update(['status' => 'in_stock', 'purchased_at' => null]);
+                        }
+                        else {
+                            $record->inventoryItem->update(['purchased_at' => null]);
+                        }
                     }),
             ])
             ->toolbarActions([

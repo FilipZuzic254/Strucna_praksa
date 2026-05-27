@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('file_name')->unique()->index();
             $table->string('file_path')->unique()->index();
+            $table->enum('type', ['technical', 'financial'])->default('technical');
+            $table->foreignId('inventory_item_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

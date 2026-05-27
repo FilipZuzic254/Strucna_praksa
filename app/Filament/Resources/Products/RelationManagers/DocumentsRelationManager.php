@@ -48,6 +48,10 @@ class DocumentsRelationManager extends RelationManager
                         )
                     ),
                 AttachAction::make()
+                    ->recordSelectOptionsQuery(function ($query) {
+                        $query->whereDoesntHave('products', fn ($q) => $q->where('product_id', $this->ownerRecord->id))
+                            ->where('type', 'technical');
+                    })
                     ->preloadRecordSelect(),
             ])
             ->recordActions([

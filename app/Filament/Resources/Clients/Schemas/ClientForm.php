@@ -20,10 +20,11 @@ class ClientForm
                         'person' => 'Person',
                         'company' => 'Company',
                     ])
+                    ->live()
                     ->required(),
                 TextInput::make('oib')
                     ->label('OIB')
-                    ->requiredIf('type', 'company')
+                    ->required(fn ($get) => $get('type') === 'company')
                     ->unique(ignoreRecord: true),
                 TextInput::make('email')
                     ->label('Email address')

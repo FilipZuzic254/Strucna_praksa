@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\RelationManagers;
 
+use App\Filament\Resources\Sensors\SensorResource;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -13,6 +14,7 @@ use Filament\Tables\Table;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use App\Models\Sensor;
+use Filament\Actions\ViewAction;
 
 class ProductSensorRelationManager extends RelationManager
 {
@@ -39,6 +41,8 @@ class ProductSensorRelationManager extends RelationManager
                     ->label('Note'),
             ])
             ->recordActions([
+                ViewAction::make()
+                    ->url(fn ($record) => SensorResource::getUrl('view', ['record' => $record->sensor_id])),
                 DeleteAction::make(),
                 EditAction::make()
             ]);

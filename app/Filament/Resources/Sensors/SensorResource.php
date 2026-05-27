@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Sensors;
 use App\Filament\Resources\Sensors\Pages\CreateSensor;
 use App\Filament\Resources\Sensors\Pages\EditSensor;
 use App\Filament\Resources\Sensors\Pages\ListSensors;
+use App\Filament\Resources\Sensors\Pages\ViewSensor;
 use App\Filament\Resources\Sensors\Schemas\SensorForm;
 use App\Filament\Resources\Sensors\Tables\SensorsTable;
 use App\Filament\Resources\Sensors\RelationManagers\ProductSensorsRelationManager;
@@ -46,6 +47,7 @@ class SensorResource extends Resource
             'index' => ListSensors::route('/'),
             'create' => CreateSensor::route('/create'),
             'edit' => EditSensor::route('/{record}/edit'),
+            'view' => ViewSensor::route('/{record}'),
         ];
     }
 

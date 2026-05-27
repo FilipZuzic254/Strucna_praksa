@@ -35,7 +35,7 @@ class GalleriesTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
-                ]),
+                ])->visible(fn () => auth()->user()->isAdmin()),
             ]);
     }
 }

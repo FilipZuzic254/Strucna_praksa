@@ -27,7 +27,7 @@ class ProductSeeder extends Seeder
 
         while (($row = fgetcsv($file)) !== false) {
             $name = trim($row[0]);
-            $sku = trim($row[1]);
+            $serialNumber = trim($row[1]);
             $kpdCode = trim($row[2]);
             $unitPrice = trim($row[3]);
             $unitOfMeasure = trim($row[4]);
@@ -36,8 +36,8 @@ class ProductSeeder extends Seeder
             $taxExemptionCode = trim($row[7]);
             $description = trim($row[9]);
 
-            if ($sku === '') {
-                $sku = fake()->unique()->bothify('???-###');
+            if ($serialNumber === '') {
+                $serialNumber = fake()->unique()->bothify('???-###');
             }
             
             if (preg_match('/^\d{2}\.\d{2}\.\d{2}$/', $kpdCode)) {
@@ -78,7 +78,7 @@ class ProductSeeder extends Seeder
 
             Product::insert([
                 'name' => $name,
-                'sku' => $sku,
+                'serial_number' => $serialNumber,
                 'kpd_code_id' => $kpdCodeId,
                 'unit_price' => $unitPrice,
                 'unit_of_measure' => $unitOfMeasure,

@@ -17,4 +17,9 @@ class Client extends Model
     {
         return $this->hasMany(ClientContact::class);
     }
+
+    public function deliveries()
+    {
+        return $this->hasMany(Delivery::class);
+    }
 }

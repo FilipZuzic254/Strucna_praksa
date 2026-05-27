@@ -23,7 +23,8 @@ class ViewInventoryItem extends ViewRecord
                 ->label('Export Sensor Data')
                 ->color('success')
                 ->icon('heroicon-o-chevron-down')
-                ->button(),
+                ->button()
+                ->hidden(fn () => auth()->user()->isShopManager()),
             ];
     }
 
@@ -38,7 +39,10 @@ class ViewInventoryItem extends ViewRecord
     {
         $widgets = $this->generateSensorCharts();
 
-        array_unshift($widgets, ItemDocuments::make(['product_id' => $this->record->product_id]));
+        array_unshift($widgets, ItemDocuments::make([
+            'product_id' => $this->record->product_id,
+            'inventory_item_id' => $this->record->id,
+        ]));
 
         array_unshift($widgets, GalleryWidget::make([
             'productId' => $this->record->id,

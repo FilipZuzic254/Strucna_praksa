@@ -46,6 +46,7 @@ class DocumentFactory extends Factory
         return [
             'file_name' => $uniqueFilename,
             'file_path' => $storagePath,
+            'type' => 'technical'
         ];
     }
 

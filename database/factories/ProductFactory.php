@@ -28,7 +28,7 @@ class ProductFactory extends Factory
 
         return [
             'name' => fake()->word(),
-            'sku' => fake()->unique()->bothify('???####???'),
+            'serial_number' => fake()->unique()->bothify('???####???'),
             'kpd_code_id' => KpdCode::inRandomOrder()->first()->id ?? null,
             'unit_price' => fake()->randomFloat(2, 10, 1000),
             'unit_of_measure' => fake()->randomElement(['piece', 'kg', 'l', 'month', 'day', 'hour']),

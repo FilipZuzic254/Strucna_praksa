@@ -49,6 +49,13 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    protected static function booted()
+    {
+        static::saving(function ($user) {
+            $user->email_verified_at = now();
+        });
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@vodissima.hr') && $this->hasVerifiedEmail();
@@ -62,5 +69,10 @@ class User extends Authenticatable implements FilamentUser
     public function isShopManager(): bool
     {
         return $this->role === 'shop_manager';
+    }
+
+    public function isTechnician(): bool
+    {
+        return $this->role === 'technician';
     }
 }

@@ -20,12 +20,15 @@ class InventoryItemPolicy
         return $user->isAdmin();
     }
 
-    public function update(User $user, InventoryItem $record): bool
+    public function update(User $user): bool
     {
-        return $user->isAdmin();
+        if ($user->isAdmin() || $user->isTechnician()) {
+            return true;
+        }
+        return false;
     }
 
-    public function delete(User $user, InventoryItem $record): bool
+    public function delete(User $user): bool
     {
         return $user->isAdmin();
     }

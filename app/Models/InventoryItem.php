@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InventoryItem extends Model
 {
-    protected $fillable = ['product_id', 'serial_number', 'status', 'purchased_at', 'installed_at', 'warranty_expires_at', 'notes'];
+    protected $fillable = ['product_id', 'sku', 'status', 'purchased_at', 'installed_at', 'warranty_expires_at', 'notes'];
 
     protected $casts = [
         'purchased_at' => 'date',
@@ -55,5 +55,10 @@ class InventoryItem extends Model
     public function itemComponents()
     {
         return $this->hasMany(ComponentItem::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
     }
 }

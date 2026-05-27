@@ -9,7 +9,7 @@ class Product extends Model
 {
     protected $fillable = [
         'name',
-        'sku',
+        'serial_number',
         'kpd_code_id',
         'unit_price',
         'unit_of_measure',

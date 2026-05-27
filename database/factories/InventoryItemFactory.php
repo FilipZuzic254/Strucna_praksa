@@ -10,6 +10,7 @@ use App\Models\DeliveryItem;
 use App\Models\InventoryItem;
 use App\Models\ProductComponent;
 use App\Models\ComponentItem;
+use App\Models\Document;
 use Illuminate\Support\Carbon;
 
 /**
@@ -27,7 +28,7 @@ class InventoryItemFactory extends Factory
     {
         return [
             'product_id' => Product::factory(),
-            'serial_number' => fake()->unique()->bothify('SN-*********'),
+            'sku' => fake()->unique()->bothify('??-*********'),
             'notes' => fake()->optional()->sentence(),
         ];
     }
@@ -42,22 +43,6 @@ class InventoryItemFactory extends Factory
                 'warranty_expires_at' => null,
             ];
 
-        })
-        ->afterCreating(function (InventoryItem $item) {
-            $productComponents = ProductComponent::where('product_id', $item->product_id)->get();
-
-            foreach ($productComponents as $component) {
-                $itemComponent = ComponentItem::where('component_id', $component->component_id)
-                    ->where('status', 'in_stock')
-                    ->first();
-                
-                if ($itemComponent) {
-                    $itemComponent->update([
-                        'inventory_item_id' => $item->id,
-                        'status' => 'installed',
-                    ]);
-                }
-            }
         });
     }
 
@@ -107,6 +92,14 @@ class InventoryItemFactory extends Factory
                 ];
             }),
             'deliveryItem'
+        )
+        ->has(
+            Document::factory()->state(function () {
+                return [
+                    'type' => 'financial',
+                ];
+            }),
+            'documents'
         );
     }
 
@@ -169,6 +162,14 @@ class InventoryItemFactory extends Factory
                 ];
             }),
             'deliveryItem'
+        )
+        ->has(
+            Document::factory()->state(function () {
+                return [
+                    'type' => 'financial',
+                ];
+            }),
+            'documents'
         );
     }
 
@@ -231,6 +232,14 @@ class InventoryItemFactory extends Factory
                 ];
             }),
             'deliveryItem'
+        )
+        ->has(
+            Document::factory()->state(function () {
+                return [
+                    'type' => 'financial',
+                ];
+            }),
+            'documents'
         );
     }
 

@@ -10,6 +10,7 @@ use App\Filament\Resources\Clients\Schemas\ClientForm;
 use App\Filament\Resources\Clients\Tables\ClientsTable;
 use App\Models\Client;
 use App\Filament\Resources\Clients\RelationManagers\ContactsRelationManager;
+use App\Filament\Resources\Clients\RelationManagers\DeliveriesRelationManager;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -38,6 +39,7 @@ class ClientResource extends Resource
     {
         return [
             ContactsRelationManager::class,
+            DeliveriesRelationManager::class,
         ];
     }
 

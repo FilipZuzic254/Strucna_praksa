@@ -18,8 +18,9 @@ class InventoryItemsInStock
                 TextColumn::make('product.name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('serial_number')
-                    ->searchable(),
+                TextColumn::make('sku')
+                    ->searchable()
+                    ->label('SKU'),
                 TextColumn::make('notes')
                     ->limit(40)
             ])

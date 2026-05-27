@@ -24,8 +24,10 @@ class InventoryItemsTable
             ->columns([
                 TextColumn::make('product.name')
                     ->searchable()
-                    ->sortable(),
-                TextColumn::make('serial_number')
+                    ->sortable()
+                    ->limit(30),
+                TextColumn::make('sku')
+                    ->label('SKU')
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()
@@ -41,12 +43,13 @@ class InventoryItemsTable
                     ->sortable(),
                 TextColumn::make('installed_at')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('warranty_expires_at')
                     ->date()
                     ->sortable(),
                 TextColumn::make('notes')
-                    ->limit(40)
+                    ->wrap()
                     
             ])
             ->filters([
@@ -101,7 +104,16 @@ class InventoryItemsTable
                             $ids = $records->pluck('id')->join(',');
                             return redirect()->away(route('items.sensors.export', ['item_ids' => $ids]));
                         }),
-                ]),
+                ])->visible(fn () => auth()->user()->isAdmin()),
+
+                BulkAction::make('exportSensors')
+                        ->label('Export Sensor Data')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->action(function (Collection $records) {
+                            $ids = $records->pluck('id')->join(',');
+                            return redirect()->away(route('items.sensors.export', ['item_ids' => $ids]));
+                        })
+                        ->visible(fn () => auth()->user()->isTechnician()),
             ])
             ->striped();
     }

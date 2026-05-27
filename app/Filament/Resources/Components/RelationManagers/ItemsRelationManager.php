@@ -69,8 +69,8 @@ class ItemsRelationManager extends RelationManager
                     ->schema([
                         TextEntry::make('inventoryItem.product.name')
                             ->label('Product'),
-                        TextEntry::make('inventoryItem.serial_number')
-                            ->label('Item serial number'),
+                        TextEntry::make('inventoryItem.sku')
+                            ->label('Item SKU'),
                     ])
                     ->columns(2)
                     ->columnSpanFull()

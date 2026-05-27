@@ -38,7 +38,8 @@ class ClientsTable
                 TextColumn::make('phone')
                     ->searchable(),
                 TextColumn::make('address')
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap(),
             ])
             ->filters([
                 SelectFilter::make('type')
@@ -53,9 +54,11 @@ class ClientsTable
                 DeleteAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                BulkActionGroup::make(
+                    auth()->user()->isAdmin()    
+                    ?[DeleteBulkAction::make()]
+                    :[]
+                ),
             ])
             ->striped();
             

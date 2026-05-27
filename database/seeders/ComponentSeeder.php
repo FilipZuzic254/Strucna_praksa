@@ -15,7 +15,7 @@ class ComponentSeeder extends Seeder
     {
         Component::factory()
             ->count(20)
-            ->hasItems(400)
+            ->hasItems(300)
             ->create();
     }
 }

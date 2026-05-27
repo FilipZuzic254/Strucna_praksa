@@ -24,13 +24,17 @@ class ProductsTable
                     ->label('Header Image')
                     ->square()
                     ->imageHeight(50)
-                    ->disk('public'),
+                    ->disk('public')
+                    ->toggleable(),
                 TextColumn::make('name')
                     ->searchable()
-                    ->sortable(),
-                TextColumn::make('sku')
+                    ->sortable()
+                    ->wrap()
+                    ->toggleable(),
+                TextColumn::make('serial_number')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('kpdCode.code')
                     ->label('KPD Code')
                     ->description(fn (Product $record): string => $record->kpdCode->name ?? '')
@@ -40,11 +44,14 @@ class ProductsTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('unit_price')
                     ->money('EUR')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('unit_of_measure')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('tax_rate')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('taxExemption.code')
                     ->label('Tax Exemption Code')
                     ->description(fn (Product $record): string => $record->taxExemption->description ?? '')
@@ -52,11 +59,13 @@ class ProductsTable
                     ->wrap()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('warranty_months')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('in_stock_items_count')
                     ->counts('inStockItems')
                     ->label('In Stock')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->defaultSort('name')
             ->filters([
@@ -77,7 +86,16 @@ class ProductsTable
                             $ids = $records->pluck('id')->join(',');
                             return redirect()->away(route('products.sensors.export', ['product_ids' => $ids]));
                         }),
-                ]),
+                ])->visible(fn () => auth()->user()->isAdmin()),
+
+                BulkAction::make('exportSensors')
+                        ->label('Export Sensor Data')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->action(function (Collection $records) {
+                            $ids = $records->pluck('id')->join(',');
+                            return redirect()->away(route('products.sensors.export', ['product_ids' => $ids]));
+                        })
+                        ->visible(fn () => auth()->user()->isTechnician()),
             ])
             ->striped();
     }

@@ -23,8 +23,9 @@ class ProductCount extends TableWidget
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
-                    ->sortable(),
-                TextColumn::make('sku')
+                    ->sortable()
+                    ->limit(28),
+                TextColumn::make('serial_number')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('in_stock_items_count')

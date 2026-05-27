@@ -18,15 +18,21 @@ class ClientPolicy
 
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        if ($user->isAdmin() || $user->isShopManager()) {
+            return true;
+        }
+        return false;
     }
 
-    public function update(User $user, Client $record): bool
+    public function update(User $user): bool
     {
-        return $user->isAdmin();
+        if ($user->isAdmin() || $user->isShopManager()) {
+            return true;
+        }
+        return false;
     }
 
-    public function delete(User $user, Client $record): bool
+    public function delete(User $user): bool
     {
         return $user->isAdmin();
     }

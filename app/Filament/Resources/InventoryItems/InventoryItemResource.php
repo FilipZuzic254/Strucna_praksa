@@ -26,7 +26,7 @@ class InventoryItemResource extends Resource
     
     protected static ?string $pluralModelLabel  = 'Stock';
 
-    protected static ?string $recordTitleAttribute = 'serial_number';
+    protected static ?string $recordTitleAttribute = 'sku';
 
     public static function form(Schema $schema): Schema
     {

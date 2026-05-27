@@ -18,7 +18,8 @@ class InventoryItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('serial_number')
+                TextColumn::make('sku')
+                    ->label('SKU')
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()

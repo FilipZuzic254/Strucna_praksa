@@ -26,7 +26,8 @@ class SoonExpiring extends TableWidget
                     ->orderBy('warranty_expires_at', 'asc')
             )
             ->columns([
-                TextColumn::make('serial_number')
+                TextColumn::make('sku')
+                    ->label('SKU')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('product.name')

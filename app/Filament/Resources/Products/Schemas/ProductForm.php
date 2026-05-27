@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Filament\Resources\Galleries\GalleryResource;
 use App\Models\GalleryImage;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use App\Models\KpdCode;
+use Filament\Actions\Action;
 use Filament\Schemas\Components\Utilities\Get;
 
 class ProductForm
@@ -17,11 +19,13 @@ class ProductForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
-
-                TextInput::make('sku')
                     ->required()
-                    ->unique(ignoreRecord: true),
+                    ->disabled(fn () => auth()->user()->isShopManager()),
+
+                TextInput::make('serial_number')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->disabled(fn () => auth()->user()->isShopManager()),
 
                 Select::make('kpd_code_id')
                     ->label('KPD Code')
@@ -29,7 +33,8 @@ class ProductForm
                     ->searchable(['code', 'name'])
                     ->getOptionLabelFromRecordUsing(fn (KpdCode $record) => "{$record->code} - {$record->name}")
                     ->preload()
-                    ->nullable(),
+                    ->nullable()
+                    ->disabled(fn () => auth()->user()->isShopManager()),
 
                 Select::make('warranty_months')
                     ->options([
@@ -40,12 +45,14 @@ class ProductForm
                         48 => '4 years',
                         60 => '5 years',
                     ])
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => auth()->user()->isShopManager()),
 
                 TextInput::make('unit_price')
                     ->prefix('€')
                     ->numeric()
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => auth()->user()->isShopManager()),
 
                 Select::make('unit_of_measure')
                     ->options([
@@ -56,7 +63,8 @@ class ProductForm
                         'day' => 'Day',
                         'hour' => 'Hour',
                     ])
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => auth()->user()->isShopManager()),
 
                 Select::make('tax_rate')
                     ->options([
@@ -66,7 +74,8 @@ class ProductForm
                         '25' => '25%',
                     ])
                     ->live()
-                    ->required(),
+                    ->required()
+                    ->disabled(fn () => auth()->user()->isShopManager()),
 
                 Select::make('tax_exemption_id')
                     ->label('Tax Exemption')
@@ -74,13 +83,15 @@ class ProductForm
                     ->searchable(['code', 'description'])
                     ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->code} - {$record->description}")
                     ->preload()
-                    ->visible(fn (Get $get) => $get('tax_rate') === '0')
-                    ->required(fn (Get $get) => $get('tax_rate') === '0'),
+                    ->visible(fn (Get $get) => $get('tax_rate') == '0')
+                    ->required(fn (Get $get) => $get('tax_rate') == '0')
+                    ->disabled(fn () => auth()->user()->isShopManager()),
 
                 TextInput::make('discount')
                     ->numeric()
                     ->minValue(0)
-                    ->maxValue(100),
+                    ->maxValue(100)
+                    ->disabled(fn () => auth()->user()->isShopManager()),
                 
 
                 Select::make('gallery_id')
@@ -90,7 +101,23 @@ class ProductForm
                     ->getOptionLabelFromRecordUsing(fn ($record) => $record->name)
                     ->preload()
                     ->live()
-                    ->nullable(),
+                    ->nullable()
+                    ->afterContent([
+                        Action::make('createGallery')
+                            ->label('New')
+                            ->url(fn () => GalleryResource::getUrl('create'))
+                            ->button()
+                            ->visible(fn ($operation, Get $get) => $operation === 'create' || ($operation === 'edit' && $get('gallery_id') === null)),
+                        Action::make('viewGallery')
+                            ->label('View')
+                            ->url(fn (Get $get) => GalleryResource::getUrl('view', ['record' => $get('gallery_id')]))
+                            ->button()
+                            ->visible(fn (Get $get, $operation) => 
+                                $get('gallery_id') !== null && 
+                                $operation !== 'create' && 
+                                !auth()->user()->isTechnician()
+                            ),
+                    ]),
 
                 Select::make('header_image_id')
                     ->label('Header Image')
@@ -115,8 +142,13 @@ class ProductForm
                     ->maxLength(1000)
                     ->autosize()
                     ->columnSpan(function (Get $get) {
-                        return $get('gallery_id') ? 2 : 1;
-                    }),
+                        if ($get('gallery_id') xor $get('tax_rate')=='0') {
+                            return 2;
+                        }
+                        
+                        return 1;
+                    })
+                    ->disabled(fn () => auth()->user()->isShopManager()),
                 
             ]);
     }
