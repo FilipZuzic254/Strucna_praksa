@@ -94,7 +94,10 @@ class ProductSeeder extends Seeder
 
         fclose($file);
 
-        $this->call(ProductComponentSeeder::class);
+        $this->call(
+            ProductComponentSeeder::class,
+            DocumentSeeder::class,
+        );
 
         Product::get()
             ->each(function ($product) {

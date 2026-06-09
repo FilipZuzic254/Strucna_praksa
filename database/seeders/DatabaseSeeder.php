@@ -39,7 +39,6 @@ class DatabaseSeeder extends Seeder
             ComponentSeeder::class,
             GallerySeeder::class,
             ProductSeeder::class,
-            DocumentSeeder::class,
         ]);
     }
 }
