@@ -109,7 +109,7 @@ class ViewInventoryItem extends ViewRecord
         $productSensors = $this->record->product
             ->productSensors()
             ->with('sensor')
-            ->whereHas('sensor', fn($query) => $query->where('unit', 'L/min')->orWhere('unit', 'bar')->orWhere('unit', 'hPa'))
+            ->whereHas('sensor', fn($query) => $query->where('unit', 'L/min'))
             ->get();
 
 
