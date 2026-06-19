@@ -6,10 +6,13 @@ use App\Filament\Resources\InventoryItems\InventoryItemResource;
 use App\Livewire\GalleryWidget;
 use App\Livewire\ItemDocuments;
 use App\Livewire\SensorReadingChart;
+use App\Models\SensorReading;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Facades\Log;
 
 class ViewInventoryItem extends ViewRecord
 {
@@ -22,6 +25,12 @@ class ViewInventoryItem extends ViewRecord
             ActionGroup::make($this->generateSensorExportActions())
                 ->label('Export Sensor Data')
                 ->color('success')
+                ->icon('heroicon-o-chevron-down')
+                ->button()
+                ->hidden(fn () => auth()->user()->isShopManager()),
+            ActionGroup::make($this->addSensorValueActions())
+                ->label('Add Sensor Value')
+                ->color('primary')
                 ->icon('heroicon-o-chevron-down')
                 ->button()
                 ->hidden(fn () => auth()->user()->isShopManager()),
@@ -81,13 +90,47 @@ class ViewInventoryItem extends ViewRecord
         foreach ($productSensors as $productSensor) {
             $actions[] = Action::make("export_sensor_{$productSensor->id}")
                 ->label("Export {$productSensor->sensor->name} Readings")
-                ->color('amber')
+                ->color('black')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->openUrlInNewTab()
                 ->url(fn() => route('item.sensors.export', [
                     $this->record,
                     'product_sensor_id' => $productSensor->id,
                 ]));
+        }
+
+        return $actions;
+    }
+
+    private function addSensorValueActions(): array
+    {
+        $actions = [];
+
+        $productSensors = $this->record->product
+            ->productSensors()
+            ->with('sensor')
+            ->whereHas('sensor', fn($query) => $query->where('unit', 'L/min')->orWhere('unit', 'bar')->orWhere('unit', 'hPa'))
+            ->get();
+
+
+        foreach ($productSensors as $productSensor) {
+            $actions[] = Action::make("add_sensor_value_{$productSensor->id}")
+                ->label("Add {$productSensor->sensor->name} Value")
+                ->color('black')
+                ->icon('heroicon-o-plus')
+                ->form([
+                    TextInput::make('value')
+                        ->label($productSensor->sensor->name . ' (' . $productSensor->sensor->unit . ') value')
+                        ->numeric()
+                        ->required(),
+                ])
+                ->action(function (array $data) use ($productSensor) {
+                    SensorReading::create([
+                        'inventory_item_id' => $this->record->id,
+                        'product_sensor_id' => $productSensor->id,
+                        'value' => $data['value'],
+                    ]);
+                });
         }
 
         return $actions;
